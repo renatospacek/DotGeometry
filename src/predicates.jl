@@ -14,3 +14,4 @@ isclosed(points::AbstractVector{<:Point}) = points[1] == points[end]
 # isin(point, domain)
 
 # TODO
+

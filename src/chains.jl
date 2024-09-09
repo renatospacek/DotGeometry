@@ -1,55 +1,47 @@
 # TODO: maybe add methods for tuple of tuples and tuple of vectors and vector of vectors for LineString?
-# TODO: conversion type if points not all the same type into linestring
 """
-    struct LineString{T}
+    LineString([p₁, p₂, ..., pₙ], isclosed)
+    LineString([p₁, p₂, ..., pₙ])
+    LineString(p₁, p₂, ..., pₙ)
+    LineString((x₁, y₁), (x₂, y₂), ..., (xₙ, yₙ))
 
-A collection of points connected by line segments
+An (open or closed) polygonal chain represented by its vertices `p₁, p₂, ..., pₙ`.
+
+Defaults to open if `isclosed` is not specified.
+
+NOTE: The first and last points must be different.
+Periodicity is accounted for by setting `isclosed = true`.
 """
 struct LineString{T} <: AbstractChain{T}
     points::Vector{Point{T}}
-    closed::Bool
+    isclosed::Bool
 
-    function LineString(points::Vector{Point{T}}, closed::Bool) where {T}
-        @assert points[1] != points[end] "First and last points are the same. For a closed chain, set `closed = true`"
+    function LineString(points::Vector{Point{T}}, isclosed::Bool) where {T}
+        @assert points[1] != points[end] "First and last points are the same. For a closed chain, set `isclosed = true`"
 
-        closed && push!(points, points[1])
-        new{T}(points, closed)
+        isclosed && push!(points, points[1])
+        new{T}(points, isclosed)
     end
 end
 
-LineString(points::AbstractVector{<:Point}; closed::Bool = false) = LineString(points, closed)
-LineString(points::Tuple...; closed::Bool=false) = LineString([Point(p) for p in points], closed)
-LineString(points::Point...; closed::Bool=false) = LineString(collect(points), closed)
-LineString(points::AbstractVector{<:Tuple}; closed::Bool=false) = LineString(Point.(points), closed)
-
-# Convenience constructor using keyword arg for closed
-# LineString(points::Vector{Point{T}}; closed::Bool = false) where {T} = LineString(points, closed)
-# # Constructor from vector of tuples
-# LineString(tuples::Vector{Tuple{T,T}}; closed::Bool=false) where {T} = LineString(Point{T}[tuples...], closed)
-# # Constructor by passing points directly
-# LineString(points::Point{T}...; closed::Bool=false) where {T} = LineString(Point{T}[points...], closed)
-# # Constructor by passing tuples directly
-# LineString(tuples::Tuple{T,T}...; closed::Bool=false) where {T} = LineString(Point{T}[tuples...], closed)
-
-
-LineString(points::Tuple...; closed::Bool=false) = LineString([Point(p) for p in points], closed)
-LineString(points::Point; closed::Bool=false) = LineString(collect(points), closed)
-LineString(points::AbstractVector{<:Tuple}; closed::Bool=false) = LineString(Point.(points), closed)
-
-# function (c::LineString)(t)
-#     ls = segments(c)
-#     return [l(t) for l in ls]
-# end
+# Convenience constructors
+LineString(points::AbstractVector{<:Point}; isclosed::Bool = false) = LineString(points, isclosed)
+LineString(points::Tuple...; isclosed::Bool=false) = LineString([Point(p) for p in points], isclosed)
+LineString(points::Point...; isclosed::Bool=false) = LineString(collect(points), isclosed)
+LineString(points::AbstractVector{<:Tuple}; isclosed::Bool=false) = LineString(Point.(points), isclosed)
 
 """
-    Polygon(N; center::Point{T} = origin, r::T = one(T))
+    Polygon(N; center=origin, r::1.0)
+    Polygon(N)
 
-Constructs a r regular polygon with N vertices centered at `center` and radius `r`. If not specified, `center` defaults to the origin and `r` defaults to 1.
+Construct a regular polygon with `N` vertices centered at `center` with radius `r`.
+
+If not specified, `center` is set to the origin and `r` to 1.0.
 """
-function Polygon(N::Int; center::Point{T} = origin, r::T = one(T)) where {T}
-    θ = range(0.0, 2π, N)
-    x = center[1] .+ r*cos.(θ)
-    y = center[2] .+ r*sin.(θ)
+function Polygon(N::Int; center::Point = origin, r::Float64 = 1.0)
+    θ = range(0, 2π, N)
+    x = center[1] .+ r.*cos.(θ)
+    y = center[2] .+ r.*sin.(θ)
     points = [Point(x[i], y[i]) for i in 1:N]
 
     return LineString(points, true)

@@ -1,16 +1,12 @@
 module DotGeometry
 
-using Plots
 using LinearAlgebra
 using StaticArrays
-using Test
-# plotlyjs()
+using Plots: @recipe
 
 abstract type AbstractGeometry{T} end
 abstract type AbstractCurve{T} <: AbstractGeometry{T} end
 abstract type AbstractChain{T} <: AbstractGeometry{T} end
-
-# Broadcast.broadcastable(g::BezierCurve) = Ref(g)
 
 include("point.jl")
 # include("line.jl")
@@ -19,17 +15,17 @@ include("chains.jl")
 include("bezier.jl")
 include("predicates.jl")
 include("circle.jl")
-# include("disc_tmp.jl")
 include("domain.jl")
 include("discretize.jl")
 include("visualization.jl")
 
-export Point, getx, gety
+export Point, getx, gety, origin
 export Segment, segments
 export LineString, AbstractChain, AbstractCurve, Polygon
 export BezierCurve, BezierAlgorithm, DeCasteljau
-export isclosed
-export Circle, CircularArc
+export isclosed, get_typename
+export Circle, CircularArc, get_circle_center
 export CompositeDomain, AbstractDomain
+export discretize_boundary, discretize_domain
 
 end
