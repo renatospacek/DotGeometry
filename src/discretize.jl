@@ -1,16 +1,8 @@
 # TODO
-# sampling points from domain
-
-# TODO (discretizations)
-# tesselation (delauney package has it)
-# voronoi
-# regular grid
-# refinement
-
-# TODO domain
-# bounding box
-# convex hull
-
+# properly sampling points from domain
+# integrate: tesselation, triangulation, etc
+# regular grid discretization
+# domain: bounding box, convex hull
 # TODO arc-length parametrization for curves
 
 curve_length(entity) = 1.0 # TODO
