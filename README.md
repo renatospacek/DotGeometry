@@ -23,4 +23,4 @@ To install DotGeometry, add it directly from the source using Julia's package ma
 
 ## Examples
 
-You can find examples of how to use DotGeometry in this [examples](examples/examples.html) file.
+You can find examples of how to use DotGeometry in this [examples](examples/examples.ipynb) file.
