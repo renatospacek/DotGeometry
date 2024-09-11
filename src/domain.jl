@@ -17,3 +17,31 @@ function CompositeDomain(shapes::AbstractVector{<:AbstractCurve})
     T = promote_type(map(x -> eltype(x), shapes)...)
     return CompositeDomain{T}(map(x -> convert(AbstractShape{T}, x), shapes))
 end
+
+
+#=
+# flattens chains into segments
+function CompositeDomain(shapes::AbstractVector{<:AbstractGeometry})
+    cs = AbstractCurve[]
+
+    for shape in shapes
+        append!(cs, segments(shape))
+    end
+
+    T = promote_type(map(x -> eltype(x), cs)...)
+    return CompositeDomain{T}(map(x -> convert(AbstractCurve{T}, x), cs))
+end
+
+CompositeDomain(entities::AbstractGeometry...) = CompositeDomain(collect(entities))
+
+# flattens chains into segments
+function CompositeDomain(shapes::AbstractVector{<:AbstractGeometry})
+    cs = AbstractCurve[]
+
+    for shape in shapes
+        append!(cs, segments(shape))
+    end
+
+    return CompositeDomain{Float64}(shapes)
+end
+=#
