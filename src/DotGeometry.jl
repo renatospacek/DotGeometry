@@ -9,7 +9,7 @@ abstract type AbstractCurve{T} <: AbstractGeometry{T} end
 abstract type AbstractChain{T} <: AbstractGeometry{T} end
 
 include("point.jl")
-# include("line.jl")
+#include("line.jl")
 include("segment.jl")
 include("chains.jl")
 include("bezier.jl")
