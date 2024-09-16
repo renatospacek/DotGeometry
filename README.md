@@ -10,7 +10,7 @@ DotGeometry is a 2D geometry library designed to construct and discretize 2D dom
   - Line segments
   - Bézier curves
   - Polygonal chains
-  - Circles/circular arcs
+  - Circles and circular arcs
 - Discretization of geometries
 - Visualization of geometries
 
