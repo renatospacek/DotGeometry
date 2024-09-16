@@ -3,6 +3,7 @@
 DotGeometry is a 2D geometry library designed to construct and discretize 2D domains using simple geometries.
 
 ## Features
+
 - Creation of exact geometric objects:
   - Points
   - Circles
